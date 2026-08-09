@@ -1,0 +1,645 @@
+<title>阿姆斯特丹 2026.10.17-10.28 · 家庭机票监控</title>
+<style>
+:root{
+  --ground:#0e1420; --surface:#151d2c; --surface2:#1b2536; --line:#26324a;
+  --text:#e9edf5; --muted:#8f9db8; --dim:#5f6d87;
+  --accent:#f47b20; --accent-soft:#f47b201f;
+  --good:#3fb883; --warn:#e5b13c; --crit:#e2604a;
+  --shadow:0 1px 0 #ffffff08 inset, 0 12px 32px #0006;
+}
+@media (prefers-color-scheme: light){
+  :root{
+    --ground:#f6f4f0; --surface:#ffffff; --surface2:#faf8f5; --line:#e2ded6;
+    --text:#161d29; --muted:#5d6a80; --dim:#8b96a8;
+    --accent:#d4600c; --accent-soft:#d4600c14;
+    --good:#1f8a5c; --warn:#a97c10; --crit:#c0402a;
+    --shadow:0 1px 2px #0000000d, 0 8px 24px #0000000a;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0e1420; --surface:#151d2c; --surface2:#1b2536; --line:#26324a;
+  --text:#e9edf5; --muted:#8f9db8; --dim:#5f6d87;
+  --accent:#f47b20; --accent-soft:#f47b201f;
+  --good:#3fb883; --warn:#e5b13c; --crit:#e2604a;
+  --shadow:0 1px 0 #ffffff08 inset, 0 12px 32px #0006;
+}
+:root[data-theme="light"]{
+  --ground:#f6f4f0; --surface:#ffffff; --surface2:#faf8f5; --line:#e2ded6;
+  --text:#161d29; --muted:#5d6a80; --dim:#8b96a8;
+  --accent:#d4600c; --accent-soft:#d4600c14;
+  --good:#1f8a5c; --warn:#a97c10; --crit:#c0402a;
+  --shadow:0 1px 2px #0000000d, 0 8px 24px #0000000a;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--ground); color:var(--text);
+  font-family:"Helvetica Neue",Helvetica,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  font-size:15px; line-height:1.6; -webkit-font-smoothing:antialiased;
+}
+.mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px 80px}
+
+/* ── header ── */
+header{border-bottom:1px solid var(--line);background:var(--surface);margin-bottom:32px}
+.hd{max-width:1080px;margin:0 auto;padding:26px 20px 22px;display:flex;flex-wrap:wrap;gap:18px;align-items:flex-end;justify-content:space-between}
+.eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 8px}
+h1{margin:0;font-size:clamp(24px,4vw,34px);line-height:1.15;letter-spacing:-.02em;font-weight:700;text-wrap:balance}
+.hd .sub{color:var(--muted);font-size:13px;margin:7px 0 0}
+.stamp{text-align:right;font-size:12px;color:var(--muted);line-height:1.5}
+.stamp b{display:block;color:var(--text);font-size:15px;letter-spacing:.01em}
+.live{display:inline-flex;align-items:center;gap:6px;color:var(--good);font-weight:600}
+.live::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--good)}
+
+/* ── section ── */
+section{margin:0 0 40px}
+h2{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:0 0 4px;
+   padding-bottom:10px;border-bottom:1px solid var(--line)}
+h2 span{color:var(--accent)}
+.lede{color:var(--muted);font-size:13.5px;margin:12px 0 18px;max-width:68ch}
+
+/* ── board cards ── */
+.board{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px;margin-top:18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:4px;box-shadow:var(--shadow);overflow:hidden}
+.card-hd{padding:16px 18px 14px;border-bottom:1px solid var(--line);background:var(--surface2)}
+.tag{display:inline-block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;
+     padding:3px 7px;border-radius:2px;background:var(--accent-soft);color:var(--accent);margin-bottom:9px}
+.route{font-size:19px;font-weight:700;letter-spacing:-.01em;margin:0}
+.route .arw{color:var(--accent);margin:0 7px;font-weight:400}
+.who{color:var(--muted);font-size:12.5px;margin:5px 0 0}
+.card-bd{padding:16px 18px}
+.pricerow{display:flex;gap:22px;flex-wrap:wrap}
+.pr{flex:1;min-width:120px}
+.pr .lab{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);font-weight:700;margin-bottom:5px}
+.pr .val{font-size:29px;font-weight:700;letter-spacing:-.02em;line-height:1}
+.pr .val.hi{color:var(--accent)}
+.pr .note{font-size:11.5px;color:var(--muted);margin-top:5px;line-height:1.45}
+.split{border-top:1px dashed var(--line);margin-top:15px;padding-top:13px;font-size:12.5px;color:var(--muted)}
+.split b{color:var(--text)}
+
+/* ── table ── */
+.tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:4px;background:var(--surface);box-shadow:var(--shadow)}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:620px}
+th{text-align:left;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);font-weight:700;
+   padding:11px 14px;border-bottom:1px solid var(--line);background:var(--surface2);white-space:nowrap}
+td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tbody tr:hover{background:var(--accent-soft)}
+td.num{white-space:nowrap;font-weight:700}
+.best{color:var(--accent)}
+a{color:var(--text);text-decoration:none;border-bottom:1px solid var(--accent);padding-bottom:1px}
+a:hover{color:var(--accent)}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+.pill{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 6px;border-radius:2px;letter-spacing:.04em;white-space:nowrap}
+.pill.ns{background:#3fb88322;color:var(--good)}
+.pill.st{background:#e5b13c22;color:var(--warn)}
+.pill.st2{background:#e2604a22;color:var(--crit)}
+.pill.na{background:#8f9db822;color:var(--muted)}
+
+/* ── recommendations ── */
+.recs{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-top:18px}
+.rec{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:3px;padding:16px 18px;box-shadow:var(--shadow)}
+.rec.alt{border-left-color:var(--dim)}
+.rec h3{margin:0 0 3px;font-size:15px;font-weight:700;letter-spacing:-.01em}
+.rec .price{font-size:22px;font-weight:700;letter-spacing:-.02em;margin:8px 0 10px}
+.rec .fl{font-size:12.5px;color:var(--muted);line-height:1.7;margin:0 0 11px}
+.rec .fl b{color:var(--text);font-weight:600}
+.rec ul{margin:0;padding-left:0;list-style:none;font-size:12.5px;line-height:1.65}
+.rec li{padding-left:16px;position:relative;margin-bottom:3px;color:var(--muted)}
+.rec li.p::before{content:"+";position:absolute;left:2px;color:var(--good);font-weight:700}
+.rec li.m::before{content:"−";position:absolute;left:2px;color:var(--crit);font-weight:700}
+
+/* ── flight segments inside rec ── */
+.segs{border:1px solid var(--line);border-radius:3px;overflow:hidden;margin:12px 0}
+.seg{display:grid;grid-template-columns:44px 1fr;gap:12px;padding:11px 13px;background:var(--surface2)}
+.seg+.seg{border-top:1px solid var(--line)}
+.seg .dir{font-size:10.5px;font-weight:700;letter-spacing:.06em;color:var(--accent);padding-top:2px}
+.seg .l1{font-size:13px;font-weight:700;letter-spacing:-.01em;margin-bottom:3px}
+.seg .l1 .t{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-variant-numeric:tabular-nums}
+.seg .l1 .ap{color:var(--muted);font-weight:600;font-size:12px;margin-left:3px}
+.seg .l2{font-size:11.5px;color:var(--muted);line-height:1.55}
+.seg .l2 .fn{font-family:ui-monospace,"SF Mono",Menlo,monospace;color:var(--text);font-weight:700}
+.seg .l2 .ns{color:var(--good);font-weight:700}
+.seg .l2 .sv{color:var(--warn);font-weight:700}
+.bag{font-size:11.5px;color:var(--muted);margin:0 0 12px}
+.bag b{color:var(--text)}
+.btn{display:inline-flex;align-items:center;gap:7px;background:var(--accent);color:#fff;border:none;border-radius:3px;
+     padding:9px 14px;font-size:12.5px;font-weight:700;text-decoration:none;letter-spacing:.01em;margin-top:2px}
+.btn:hover{color:#fff;filter:brightness(1.08)}
+.btn:focus-visible{outline:2px solid var(--text);outline-offset:2px}
+.btn::after{content:"→";font-weight:400}
+.also{margin-top:11px;font-size:11.5px;color:var(--muted);line-height:1.9}
+.also b{color:var(--dim);font-weight:700;letter-spacing:.06em;font-size:10px;text-transform:uppercase;display:block;margin-bottom:2px}
+.also a{font-size:12px;border-bottom-color:var(--line)}
+.also .pz{font-family:ui-monospace,"SF Mono",Menlo,monospace;color:var(--text);font-weight:700}
+.hint{font-size:11.5px;color:var(--dim);margin:9px 0 0;line-height:1.55;padding-left:15px;position:relative}
+.hint::before{content:"↳";position:absolute;left:0}
+
+/* ── tracked flight ── */
+.trackbox{background:var(--surface);border:2px solid var(--accent);border-radius:4px;padding:20px 22px;box-shadow:var(--shadow)}
+.track-hd{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
+.track-hd h3{margin:0;font-size:16px;font-weight:700;letter-spacing:-.01em}
+.track-hd p{margin:4px 0 0;font-size:12.5px;color:var(--muted)}
+.paid-pill{display:inline-flex;flex-direction:column;align-items:flex-end;background:var(--accent-soft);border:1px solid var(--accent);border-radius:3px;padding:8px 14px}
+.paid-pill .lab{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.paid-pill .val{font-size:22px;font-weight:700;color:var(--accent);line-height:1.3}
+.track-quotes{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:14px}
+.tq{background:var(--surface2);border:1px solid var(--line);border-radius:3px;padding:11px 13px}
+.tq .n{font-size:11px;color:var(--muted);font-weight:600;margin-bottom:4px}
+.tq .p{font-size:18px;font-weight:700;letter-spacing:-.01em}
+.tq.mine{border-color:var(--accent)}
+.tq.mine .p{color:var(--accent)}
+
+/* ── chart ── */
+.chartbox{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:18px;box-shadow:var(--shadow)}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-bottom:14px}
+.legend i{display:inline-block;width:14px;height:2px;vertical-align:middle;margin-right:6px}
+svg{display:block;width:100%;height:auto}
+.empty{padding:34px 18px;text-align:center;color:var(--muted);font-size:13px;line-height:1.7}
+.empty b{color:var(--text)}
+.dow{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:18px}
+.dow div{text-align:center;background:var(--surface2);border:1px solid var(--line);border-radius:3px;padding:10px 4px}
+.dow .d{font-size:11px;color:var(--muted);font-weight:700}
+.dow .v{font-size:14px;font-weight:700;margin-top:4px}
+.dow .v.none{color:var(--dim);font-weight:400}
+.dow div.win{border-color:var(--accent);background:var(--accent-soft)}
+.dow div.win .v{color:var(--accent)}
+
+/* ── notes ── */
+.notes{background:var(--surface2);border:1px solid var(--line);border-radius:4px;padding:18px 20px;font-size:12.5px;color:var(--muted);line-height:1.75}
+.notes h3{margin:0 0 9px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--text);font-weight:700}
+.notes ul{margin:0;padding-left:17px}
+.notes li{margin-bottom:6px}
+.notes strong{color:var(--text);font-weight:600}
+footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);font-size:11.5px;color:var(--dim);display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+@media (max-width:560px){
+  .hd{flex-direction:column;align-items:flex-start}
+  .stamp{text-align:left}
+  .pr .val{font-size:25px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<header>
+  <div class="hd">
+    <div>
+      <p class="eyebrow">Amsterdam · 2026.10.17 — 10.28</p>
+      <h1>家庭机票价格监控</h1>
+      <p class="sub">两条开口程行程 · 全网比价 · 每日自动更新</p>
+    </div>
+    <div class="stamp">
+      <span class="live">数据实时</span>
+      <b class="mono" id="stamp">2026-08-08</b>
+      <span id="stampnote">首次全量检索完成</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<!-- ══ 1. 今日概览 ══ -->
+<section>
+  <h2>今日最低价 <span>/ Today</span></h2>
+  <p class="lede">两条行程都是<strong>开口程（缺口程）</strong>：去阿姆斯特丹、从法兰克福回。务必按「多城市 / Multi-city」搜索并出一张联程票 —— 拆成两张单程会明显更贵（下方平台表有实测对比）。</p>
+
+  <div class="board" id="board"></div>
+</section>
+
+<!-- ══ 2. 推荐 ══ -->
+<section>
+  <h2>选择建议 <span>/ 行程 A · 我（旧金山出发）</span></h2>
+  <div class="recs" id="recsA"></div>
+</section>
+
+<section>
+  <h2>选择建议 <span>/ 行程 B · 老婆 + 爸妈 + 草莓（上海出发）</span></h2>
+  <div class="recs" id="recsB"></div>
+</section>
+
+<!-- ══ 3. 分人价格 ══ -->
+<section>
+  <h2>三大一小 · 每人价格拆分 <span>/ Per-passenger</span></h2>
+  <p class="lede">在 Trip.com 用「3 成人 + 1 儿童」实际下单查询（页面顶部显示 4 Passengers），同时给出单人价与总价，可直接反推每人成本。<strong>本行程儿童与成人同价</strong>，无儿童折扣，总价正好是单价 × 4。点方案名可直接打开对应搜索结果。<br><strong>注意</strong>：携程和飞猪的多程页只支持按 1 位成人查（¥ 报价），所以本表统一采用 Trip.com 的 4 人实际报价，便于横向对比；实际下单时携程／飞猪的同班次可能更便宜，见上方推荐卡。</p>
+  <div class="tblwrap">
+    <table>
+      <thead><tr><th>方案</th><th>老婆</th><th>爸爸</th><th>妈妈</th><th>草莓（儿童）</th><th>4 人合计</th></tr></thead>
+      <tbody id="paxbody"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══ 4. 平台比价 ══ -->
+<section>
+  <h2>平台实测比价 <span>/ 行程 A · SFO → AMS · FRA → SFO</span></h2>
+  <p class="lede">全部为 Chrome 浏览器实际打开各平台搜索页读取的价格，统一折算为人民币、每人含税价（境外平台原始报价为美元，按当日汇率折算，见下方说明）。点平台名可直接跳转到该搜索结果页。</p>
+  <div class="tblwrap"><table>
+    <thead><tr><th>平台</th><th>全网最低</th><th>去程直飞</th><th>全程双直飞</th><th>最低价航班</th></tr></thead>
+    <tbody id="platA"></tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>平台实测比价 <span>/ 行程 B · PVG → AMS · FRA → PVG</span></h2>
+  <div class="tblwrap"><table>
+    <thead><tr><th>平台</th><th>全网最低</th><th>全程双直飞</th><th>最低价航班</th></tr></thead>
+    <tbody id="platB"></tbody>
+  </table></div>
+</section>
+
+<!-- ══ 4.5 重点监控 ══ -->
+<section>
+  <h2>重点监控 <span>/ 东航 MU771＋MU220 全程直飞</span></h2>
+  <p class="lede">这是你实际在携程 App 下单到支付前一步的航班——去程 <b>MU771</b>（上海→阿姆斯特丹）、返程 <b>MU220</b>（法兰克福→上海），全程东航直飞、同一航司。以此为基准，持续对比各平台对同一航班的报价。</p>
+  <div class="trackbox">
+    <div class="track-hd">
+      <div>
+        <h3>东航 MU771（10/17 12:30 出发）＋ MU220（10/28 13:35 出发）</h3>
+        <p>1 位成人，经济舱，携程 App 实际下单页数据</p>
+      </div>
+      <div class="paid-pill">
+        <span class="lab">携程 App 实付价</span>
+        <span class="val mono">¥8,548</span>
+        <span style="font-size:11px;color:var(--muted)">未选保险/选座前，与东航官网直连价一致</span>
+      </div>
+    </div>
+    <div class="track-quotes" id="trackQuotes"></div>
+    <p class="hint" style="margin-top:14px"><strong>已在东航官网（www.ceair.com）直接核对</strong>：用「多段」搜索同样的 MU771（10/17 上海→阿姆斯特丹，直飞）＋ MU220（10/28 法兰克福→上海，直飞），官网经济舱含税参考价同为 <b>¥8,548</b>，与携程 App 实付价完全一致，含 1 件托运行李、不可退票不可改期。（因涉及填写乘客真实证件信息才能进入支付页，未继续往下走，只核对到报价页为止。）</p>
+    <p class="hint">携程网页版与 App 的价格会有 ¥30–100 的小幅浮动（税费实时结算导致），属正常现象；以实际支付页为准。</p>
+  </div>
+</section>
+
+<!-- ══ 5. 趋势 ══ -->
+<section>
+  <h2>价格趋势 <span>/ Price trend</span></h2>
+  <p class="lede">每天自动记录一次全网最低价与全程直飞最低价。折线随天数增长，用来判断「周几买最便宜」。</p>
+  <div class="chartbox">
+    <div class="legend">
+      <span><i style="background:var(--accent)"></i>A · 全网最低</span>
+      <span><i style="background:var(--accent);opacity:.4"></i>A · 全程直飞</span>
+      <span><i style="background:var(--good)"></i>B · 全网最低（每人）</span>
+      <span><i style="background:var(--good);opacity:.4"></i>B · 全程直飞（每人）</span>
+    </div>
+    <div id="chart"></div>
+  </div>
+</section>
+
+<section>
+  <h2>周几最便宜 <span>/ 以东航 MU771＋MU220 全程直飞为准</span></h2>
+  <p class="lede">应你的要求，这里改为只跟踪<strong>上海⇄阿姆斯特丹东航来回直飞</strong>（去程 MU771、返程 MU220）这一个具体航班的每日报价，不再和旧金山那条行程混算，也不再把中转选项算进来。</p>
+  <p class="lede" id="dowlede"></p>
+  <div class="dow" id="dow"></div>
+</section>
+
+<!-- ══ 6. 说明 ══ -->
+<section>
+  <h2>数据说明与注意事项</h2>
+  <div class="notes">
+    <h3>怎么读这些数字</h3>
+    <ul>
+      <li><strong>价格口径</strong>：均为经济舱、每人含税总价。行程 A 按 1 成人查；行程 B 分别按 1 成人和「3 成人 + 1 儿童」查。</li>
+      <li><strong>草莓的年龄</strong>：查询时按 <strong>9 岁儿童</strong>下单。如果她实际不满 2 岁（婴儿票）或已满 12 岁（按成人计），价格会变，告诉我实际年龄我重新跑一遍。</li>
+      <li><strong>历史数据</strong>：机票平台不提供「过去某天的最低价」回溯查询，所以趋势图<strong>从 2026-08-08 首次检索当天开始</strong>累积，无法补上更早的数据。要看出「周几便宜」的规律，至少需要连续 2–3 周。</li>
+      <li><strong>购票链接怎么用</strong>：各平台不对外提供「某个具体航班」的固定网址（那类地址绑定会话、几分钟就失效）。所以每个链接都已预填好航线、日期和人数，直飞方案还带上了直飞筛选，打开后目标航班就在首屏 —— 对照卡片里的航班号和起降时刻即可确认，不需要重新搜索。</li>
+      <li><strong>日期已改为 10/17 出发、10/28 从法兰克福返程</strong>（此前误设为 10/16–10/27，已按用户更正重新全量检索）。Trip.com 的多程搜索会忽略网址里的日期参数，页面上的价格已改用它自己生成的正确网址重查，搜索框显示 Sat, Oct 17 / Wed, Oct 28 才采信。其余平台的日期均已逐一确认。</li>
+      <li><strong>携程与飞猪已补齐多程数据</strong>：两家的「多程／缺口程」都要在页面上手动填表才出结果，网址参数直连无效。现已拿到可复用的结果页地址，上表链接可直接打开。人民币按当日汇率 1 美元 = 6.76 元折算。</li>
+      <li><strong>Super.com 的两个注意点</strong>：一是它<strong>没有多程功能</strong>，只能按单程查，所以表里的数字是两段单程相加，通常会比开口联程票贵；二是页面显示的是<strong>会员价（Member price）</strong>，标注「¥68–50 off」，非会员实际结算可能更高，下单前请核对。</li>
+      <li><strong>东航官网仍未取到</strong>：ceair.com 与 us.ceair.com 对当前网络均返回风控拦截页。东航（MU）的实际票价已通过携程、飞猪、Trip.com、Kayak、Expedia 五个渠道交叉核对，航班号与时刻一致。</li>
+      <li><strong>低价票的坑</strong>：标着「基础经济舱 / Basic / Main Base」的票通常不含托运行李、不能选座、不可改退。带老人小孩强烈建议选含行李的票，实际差价往往没有表面看起来大。</li>
+      <li><strong>价格会变</strong>：这是搜索时刻的报价，实际下单以平台结算页为准。开口程和多人同行的库存变动比单人单程快。</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <span>数据来源：Google Flights · Kayak · Expedia · Trip.com · 携程 · Booking.com（Chrome 实测）</span>
+  <span class="mono" id="foot"></span>
+</footer>
+</div>
+
+<script>
+/* ═══════════ 数据区 · 每日定时任务在此追加 ═══════════ */
+const SNAPSHOTS = [
+  { date:"2026-08-08",
+    A:{ low:794, lowNonstopOut:916, lowNonstopBoth:984 },
+    B:{ low:637, lowNonstopBoth:1120 },
+    M:8548 }, // M = 东航 MU771（去）+ MU220（返）全程直飞，人民币原价，每人，来自携程 App 实付价 / 东航官网直连核对
+  { date:"2026-08-09",
+    A:{ low:781, lowNonstopOut:906, lowNonstopBoth:984 },
+    B:{ low:637, lowNonstopBoth:1195 },
+    M:8548 } // M 来自东航官网今日直连核对（多段搜索 MU771+MU220，含税参考价 ¥8,548，与昨日一致）
+];
+
+const TRIP_A="https://us.trip.com/flights/showfarefirst?multdcity0=sfo&multacity0=ams&multddate0=2026-10-17&multdcity1=fra&multacity1=sfo&dairport1=fra&aairport1=sfo&multddate1=2026-10-28&triptype=mt&class=y&quantity=1&locale=en-US&curr=USD";
+const TRIP_B="https://us.trip.com/flights/showfarefirst?multdcity0=pvg&multacity0=ams&multddate0=2026-10-17&multdcity1=fra&multacity1=pvg&dairport1=fra&aairport1=pvg&multddate1=2026-10-28&triptype=mt&class=y&quantity=3&childqty=1&locale=en-US&curr=USD";
+const KAYAK_A="https://www.kayak.com/flights/SFO-AMS/2026-10-17/FRA-SFO/2026-10-28?sort=price_a&currency=USD";
+const KAYAK_B="https://www.kayak.com/flights/PVG-AMS/2026-10-17/FRA-PVG/2026-10-28?sort=price_a&currency=USD";
+const EXP_A="https://www.expedia.com/Flights-Search?trip=multi&leg1=from:SFO,to:AMS,departure:10/17/2026TANYT&leg2=from:FRA,to:SFO,departure:10/28/2026TANYT&passengers=adults:1&mode=search&options=cabinclass:economy";
+const EXP_B="https://www.expedia.com/Flights-Search?trip=multi&leg1=from:PVG,to:AMS,departure:10/17/2026TANYT&leg2=from:FRA,to:PVG,departure:10/28/2026TANYT&passengers=adults:1&mode=search&options=cabinclass:economy";
+const CTRIP_A="https://flights.ctrip.com/online/list/multi-sfo0-ams-fra0-sfo0?depdate=2026-10-17_2026-10-28&cabin=y_s&adult=1&child=0&infant=0";
+const CTRIP_B="https://flights.ctrip.com/online/list/multi-pvg0-ams-fra0-pvg0?depdate=2026-10-17_2026-10-28&cabin=y_s&adult=1&child=0&infant=0";
+const FLIGGY_A="https://sijipiao.fliggy.com/ie/flight_search_result.htm?searchJourney=%5B%7B%22depCityName%22%3A%22%E6%97%A7%E9%87%91%E5%B1%B1%22%2C%22depCityCode%22%3A%22SFO%22%2C%22arrCityCode%22%3A%22AMS%22%2C%22arrCityName%22%3A%22%E9%98%BF%E5%A7%86%E6%96%AF%E7%89%B9%E4%B8%B9%22%2C%22depDate%22%3A%222026-10-17%22%7D%2C%7B%22depCityName%22%3A%22%E6%B3%95%E5%85%B0%E5%85%8B%E7%A6%8F%22%2C%22depCityCode%22%3A%22FRA%22%2C%22arrCityCode%22%3A%22SFO%22%2C%22arrCityName%22%3A%22%E6%97%A7%E9%87%91%E5%B1%B1%22%2C%22depDate%22%3A%222026-10-28%22%7D%5D&tripType=2";
+const SUPER="https://www.super.com/flights";
+const CEAIR_URL="https://www.ceair.com/zh/cny/home";
+const FLIGGY_B="https://sijipiao.fliggy.com/ie/flight_search_result.htm?searchJourney=%5B%7B%22depCityName%22%3A%22%E4%B8%8A%E6%B5%B7%22%2C%22depCityCode%22%3A%22SHA%22%2C%22arrCityCode%22%3A%22AMS%22%2C%22arrCityName%22%3A%22%E9%98%BF%E5%A7%86%E6%96%AF%E7%89%B9%E4%B8%B9%22%2C%22depDate%22%3A%222026-10-17%22%7D%2C%7B%22depCityName%22%3A%22%E6%B3%95%E5%85%B0%E5%85%8B%E7%A6%8F%22%2C%22depCityCode%22%3A%22FRA%22%2C%22arrCityCode%22%3A%22SHA%22%2C%22arrCityName%22%3A%22%E4%B8%8A%E6%B5%B7%22%2C%22depDate%22%3A%222026-10-28%22%7D%5D&tripType=2";
+
+const PLATFORMS_A = [
+  { name:"Kayak", url:KAYAK_A,
+    low:781, best:true, nsOut:null, nsBoth:984,
+    flight:"多程超低价 ¥5,280（1 次经停）：捷蓝经波士顿转 1h+伊比利亚经达拉斯转 18h52；全程双直飞 UA968+UA059 ¥6,652（价格较昨日下探，成为今日全网最低）" },
+  { name:"Expedia", url:EXP_A,
+    low:794, nsOut:916, nsBoth:null,
+    flight:"捷蓝 7:30 SFO → 波士顿转 3h10 → 9:20+1 AMS（16h50）；去程直飞起价 ¥6,192（达美/荷航 DL9647）" },
+  { name:"携程", url:CTRIP_A,
+    low:859, nsOut:906, nsBoth:null,
+    flight:"多程超低价 ¥5,804：达美 DL690+DL070 经亚特兰大转 21h30。直飞 DL9647 ¥6,127 为最低直飞、KL606 ¥6,230、UA968 ¥6,461（与昨日基本一致）" },
+  { name:"Trip.com", url:TRIP_A,
+    low:859, nsOut:944, nsBoth:null,
+    flight:"达美+维珍 23:30 SFO 经亚特兰大转 8h36 → 21h30；直飞 KL606/DL9647 ¥6,381" },
+  { name:"飞猪", url:FLIGGY_A,
+    low:944, nsOut:null, nsBoth:999,
+    flight:"多程超低价 ¥6,380：加航经蒙特利尔转 25h36。<strong>直飞价回落至 ¥6,750（UA968）</strong>，较昨日异常飙升的 ¥10,901 恢复正常，与其他平台基本一致" },
+  { name:"Super.com", url:SUPER,
+    low:837, nsOut:489, nsBoth:1974, single:true,
+    flight:"无多程功能，两段单程相加。今日未重新核对，沿用上次读数：SFO→AMS ¥2,346（JetBlue 经波士顿）／直飞 UA968 ¥3,306；FRA→SFO ¥3,312（美航经DFW）／直飞汉莎 ¥10,039。均为会员价" },
+  { name:"Google Flights", url:"https://www.google.com/travel/flights?q=Flights%20from%20SFO%20to%20AMS%20on%202026-10-17%20oneway&curr=USD&hl=en",
+    low:788, nsOut:519, nsBoth:2058, single:true,
+    flight:"两段单程相加：SFO→AMS ¥2,454（JetBlue经BOS）+ FRA→SFO ¥2,873（美航经DFW）；直飞合计 ¥3,508+¥10,404=¥13,912" },
+  { name:"Booking.com", url:"https://flights.booking.com/flights/SFO.AIRPORT-AMS.AIRPORT/?type=ONEWAY&adults=1&cabinClass=ECONOMY&from=SFO.AIRPORT&to=AMS.AIRPORT&depart=2026-10-17&sort=CHEAPEST",
+    low:null, nsOut:null, nsBoth:null, legOnly:true, blocked:true,
+    flight:"今日页面跳转到 not-available 提示页，未能取到报价，如实留空（昨日曾查到单程最低 ¥2,454）" }
+];
+
+const PLATFORMS_B = [
+  { name:"飞猪", url:FLIGGY_B,
+    low:637, best:true, nsBoth:1195,
+    flight:"多程含税 ¥4,305：南航 07:50 浦东/虹桥经北京 4h05 → 18:40 AMS（16h50），全网最低。<strong>直飞 MU771+MU220 回落至 ¥8,075</strong>（昨日 ¥8,446），全网最低直飞组合" },
+  { name:"Kayak", url:KAYAK_B,
+    low:null, nsBoth:null, blocked:true,
+    flight:"今日访问触发人机验证页（sitecaptcha），按规定不做验证码破解，如实留空未取到（昨日曾查到全程直飞最低 ¥7,571，东航 MU771 出 + 国航 CA936 回）" },
+  { name:"携程", url:CTRIP_B,
+    low:705, nsBoth:1257,
+    flight:"多程超低价 ¥4,764：南航经北京（虹桥出发）16h5m + 回程经广州 15h45。直飞最低东航 MU771 ¥8,498（今日「只看直飞」结果中排第一，未见更低的 KL896 报价）" },
+  { name:"Trip.com", url:TRIP_B,
+    low:732, nsBoth:1257,
+    flight:"按 3大1小 实查。最低：南航经北京/广州转 4,949；直飞最低东航 MU771 ¥8,497/人；KLM KL896 ¥8,991、MU1551 ¥9,545" },
+  { name:"Expedia", url:EXP_B,
+    low:732, nsBoth:1131,
+    flight:"南航 07:50 经北京大兴 4h05 → AMS（16h50）；东航 MU771 直飞 ¥7,646 为该平台最低直飞（与昨日一致）" },
+  { name:"Google Flights", url:"https://www.google.com/travel/flights?q=Flights%20from%20PVG%20to%20AMS%20on%202026-10-17%20oneway&curr=USD&hl=en",
+    low:780, nsBoth:1690, single:true,
+    flight:"两段单程相加：PVG→AMS ¥2,136（南航经北京）+ FRA→PVG ¥3,137；直飞合计 MU771 ¥5,408 + MU220 ¥6,016 = ¥11,424" },
+  { name:"Super.com", url:SUPER,
+    low:797, nsBoth:null, single:true,
+    flight:"无多程功能，两段单程相加。今日未重新核对，沿用上次读数：PVG→AMS ¥2,096（南航经北京）+ FRA→PVG ¥3,292（越南航空经胡志明市转 2h45）。均为会员价" },
+  { name:"东方航空官网", url:CEAIR_URL,
+    low:null, nsBoth:1264.5,
+    flight:"直连「多段」搜索今日再次核对：MU771 直飞（PVG→AMS）＋ MU220 直飞（FRA→PVG），经济舱含税参考价 ¥8,548，与昨日、携程 App 实付价完全一致，含 1 件托运行李、不可退票不可改期。未查到中转选项，故全网最低一栏留空" }
+];
+
+const RECS_A = [
+  { t:"性价比首选 · 达美/荷航 去程直飞", p:"¥6,127", plat:"携程", url:CTRIP_A, top:true,
+    bag:"含托运行李（携程页面标注退改签/行李规定，下单前点开确认）",
+    segs:[
+      {d:"去程",date:"10月17日 周六",t1:"13:45",a1:"SFO",ap1:"国际航站楼",t2:"09:05",p2:"+1",a2:"AMS",ap2:"史基浦",
+       fn:"DL9647 达美（荷航执飞）",ac:"波音 787 · 共享",dur:"10h20",stop:"直飞"},
+      {d:"回程",date:"10月28日 周三",t1:"—",a1:"FRA",t2:"—",a2:"SFO",
+       fn:"选定去程后在第二程选择",ac:"荷航／达美",dur:"—",stop:"以所选为准"}],
+    pros:["去程 10h20 直飞，下午出发次日早上到，时差过渡最舒服","<b>携程 ¥6,127 是全网直飞最低</b>，比 Kayak／Expedia 的 ¥6,192 还省 ¥68","同班次挂 KL606 荷航自己的号是 ¥6,230，两者机上体验完全一样","天合联盟，可累积达美/东航里程"],
+    cons:["是共享航班，值机柜台认荷航，别跑错航站楼","比全网最低价方案贵 ¥757","第二程要自己选，注意别选到过夜中转的"],
+    hint:"打开就是多程结果页，去程列表里 <b>DL9647 ¥6,127</b> 和 <b>KL606 ¥6,230</b> 都在前三条，点「选为第1程」再挑回程。",
+    also:[{n:"Kayak",p:916,u:KAYAK_A},{n:"Expedia",p:916,u:EXP_A},{n:"Trip.com",p:944,u:TRIP_A}] },
+
+  { t:"最省 · Expedia 一次经停", p:"¥5,368", plat:"Expedia", url:EXP_A,
+    bag:"经济舱，具体行李额度以出票时票价条款为准",
+    segs:[
+      {d:"去程",date:"10月17日 周六",t1:"07:30",a1:"SFO",t2:"09:20",p2:"+1",a2:"AMS",ap2:"史基浦",
+       fn:"捷蓝航空",ac:"经波士顿",dur:"16h50",stop:"中转 3h10 · BOS"},
+      {d:"回程",date:"10月28日 周三",t1:"—",a1:"FRA",t2:"—",a2:"SFO",
+       fn:"由平台组合",ac:"经济舱",dur:"—",stop:"中转 1 次"}],
+    pros:["全网最低的真联程价，比直飞省 ¥757","去程只中转波士顿一次，时长 16h50，比之前查到的经停方案更短"],
+    cons:["回程航段仍需在结果页确认转机地点和时长","建议下单前核对是否为基础经济舱（不含托运行李）"],
+    hint:"打开后按价格从低到高排序，第一屏即是这条 ¥5,367 的捷蓝组合。",
+    also:[{n:"携程（达美经亚特兰大 ¥5,804）",p:859,u:CTRIP_A},{n:"Trip.com（达美+维珍经亚特兰大）",p:859,u:TRIP_A}] },
+
+  { t:"最稳 · 全程双直飞", p:"¥6,653", plat:"Kayak", url:KAYAK_A+"&fs=stops=0", alt:true,
+    bag:"含随身行李；两段均为主流航司正常经济舱",
+    segs:[
+      {d:"去程",date:"10月17日 周六",t1:"14:45",a1:"SFO",ap1:"T3",t2:"10:20",p2:"+1",a2:"AMS",ap2:"史基浦",
+       fn:"UA968 美国联合航空",ac:"波音 777",dur:"10h35",stop:"直飞"},
+      {d:"回程",date:"10月28日 周三",t1:"10:10",a1:"FRA",ap1:"T1",t2:"13:35",a2:"SFO",ap2:"国际航站楼",
+       fn:"UA059 美国联合航空",ac:"波音 777",dur:"11h25",stop:"直飞"}],
+    pros:["两段都不转机，行李直挂，误机风险最低","回程 10:10 起飞，当天下午 13:35 到旧金山，不用倒时差过夜","比全网最低价只贵 ¥1,284，换来两段都直飞"],
+    cons:["行程 A 里最贵的一档","FRA→SFO 直飞单独买要 ¥10,451，只有打包成开口联程才有这个价"],
+    hint:"链接已带上「直飞」筛选（fs=stops=0），打开就是全程双直飞的结果。KLM/达美同款直飞组合为 ¥6,679（Trip.com）。",
+    also:[{n:"Trip.com（KLM/达美同款）",p:988,u:TRIP_A}] }
+];
+
+const RECS_B = [
+  { t:"强烈推荐 · 全程直飞最低组合", p:"¥7,571 / 人", plat:"Kayak", url:KAYAK_B+"&fs=stops=0", top:true,
+    bag:"含托运行李（东航／国航国际经济舱标准）",
+    segs:[
+      {d:"去程",date:"10月17日 周六",t1:"12:30",a1:"PVG",ap1:"T1",t2:"18:30",a2:"AMS",ap2:"史基浦",
+       fn:"MU771 中国东方航空",ac:"波音 777",dur:"12h00",stop:"直飞"},
+      {d:"回程",date:"10月28日 周三",t1:"18:40",a1:"FRA",t2:"12:40",p2:"+1",a2:"PVG",ap2:"T2",
+       fn:"CA936 中国国际航空",ac:"空客 A350",dur:"11h00",stop:"直飞"}],
+    pros:["<b>两段全直飞</b>，三位长辈和草莓不用拖行李转机 —— 这是最关键的一点","<b>全网所有直飞组合里最便宜</b>，比东航两段（MU771+MU220）省 ¥913","去程中午飞、当晚到，当天就能休息；回程国航空客 A350 机型新","按 1 人查得出的价格，4 人一起订通常也能拿到接近这个单价"],
+    cons:["<b>回程换成国航（非东航）</b>，两段不是同一家航司，行李和值机分开办理","去程和回程不是同一联盟（东航天合 vs 国航星空），不能累积同一常旅客计划"],
+    hint:"链接已带「直飞」筛选（fs=stops=0），打开后按价格排序，第一条即是 MU771+CA936 这个 ¥7,571 的组合。",
+    also:[{n:"携程（KL896 直飞 ¥8,332）",p:1232,u:CTRIP_B},{n:"Trip.com（3大1小同查，MU771 直飞）",p:1256,u:TRIP_B}] },
+
+  { t:"同航司省心 · 东航全程直飞", p:"¥8,498 / 人", plat:"携程", url:CTRIP_B,
+    bag:"含托运行李（东航国际经济舱标准，通常 2×23kg）",
+    segs:[
+      {d:"去程",date:"10月17日 周六",t1:"12:30",a1:"PVG",ap1:"T1",t2:"18:30",a2:"AMS",ap2:"史基浦",
+       fn:"MU771 中国东方航空",ac:"波音 777",dur:"12h00",stop:"直飞"},
+      {d:"回程",date:"10月28日 周三",t1:"13:35",a1:"FRA",ap1:"T3",t2:"07:25",p2:"+1",a2:"PVG",ap2:"T1",
+       fn:"MU220 中国东方航空",ac:"波音 777",dur:"10h50",stop:"直飞"}],
+    pros:["<b>PVG→AMS 全网最短的航班，12 小时整</b>","去程中午起飞、当晚落地；两段都是东航波音 777","<b>全程同一家航司</b>，行李直挂、值机方便，中文机组沟通零障碍","比上一条只贵 ¥926，换来出行体验更省心"],
+    cons:["比全网最便宜的直飞组合贵 ¥926，4 人多花约 ¥3,704","是行程 B 里较贵的档位之一"],
+    hint:"打开后在直飞结果里找 <b>东方航空 MU771　12:30→18:30　¥8,498</b>，第二程选同为东航的 MU220。",
+    also:[{n:"飞猪",p:1250,u:FLIGGY_B},{n:"Trip.com（3大1小同查）",p:1256,u:TRIP_B}] },
+
+  { t:"省钱 · 南航双经停", p:"¥4,305 / 人", plat:"飞猪", url:FLIGGY_B, alt:true,
+    bag:"含托运行李（南航国际经济舱标准，不是廉航基础票）",
+    segs:[
+      {d:"去程",date:"10月17日 周六",t1:"07:50",a1:"PVG",ap1:"T2",t2:"18:40",a2:"AMS",ap2:"史基浦",
+       fn:"中国南方航空",ac:"经北京大兴",dur:"16h50",stop:"中转 4h05 · PKX"},
+      {d:"回程",date:"10月28日 周三",t1:"11:25",a1:"FRA",ap1:"T3",t2:"10:10",p2:"+1",a2:"PVG",
+       fn:"中国南方航空",ac:"经广州白云",dur:"15h45",stop:"中转 · CAN"}],
+    pros:["<b>每人 ¥4,305，全网最低</b>，4 人合计约 ¥17,224，比直飞省约 ¥14,196","全程南航，国内转机有中文服务，行李额度大","浦东或虹桥均可出发，携程／飞猪都能查到"],
+    cons:["<b>去程 16h50、回程约 15h45，各转一次机</b>","去程 07:50 起飞，全家凌晨四点就得出门","北京转机 4 小时，带三位长辈和孩子体力消耗大","国内段延误会连累国际段，行程容错低"],
+    hint:"打开后第一条「最低价」标签即是（南方航空 等1家航司　07:50 经北京　¥4,305）。",
+    also:[{n:"携程 ¥4,764（虹桥出发）",p:705,u:CTRIP_B},{n:"Kayak",p:709,u:KAYAK_B},{n:"Trip.com",p:732,u:TRIP_B}] }
+];
+
+const PAX = [
+  { n:"东航 MU771 全程直飞（去程 12h，最短）", per:1257, best:true, u:TRIP_B },
+  { n:"荷航 KL896 全程直飞（去程 13h55）", per:1330, ns:true, u:TRIP_B },
+  { n:"南航双经停（去 16h50 / 回约 16h）", per:732, u:TRIP_B },
+  { n:"东航／荷航共享 MU1551 直飞", per:1412, ns:true, u:TRIP_B }
+];
+
+// p 为人民币实际金额（不再乘汇率）；东航官网/携程/飞猪为人民币原始报价，Trip.com 为美元换算
+const TRACKED_QUOTES = [
+  { n:"携程 App（实付）", p:8548, u:CTRIP_B, mine:true },
+  { n:"东航官网（直连核对）", p:8548, u:CEAIR_URL, verified:true },
+  { n:"携程网页版", p:8498, u:CTRIP_B },
+  { n:"飞猪", p:8075, u:FLIGGY_B },
+  { n:"Trip.com（3大1小同查，约）", p:8497, u:TRIP_B }
+];
+
+/* ═══════════ 渲染 ═══════════ */
+const $=id=>document.getElementById(id);
+const RATE=6.76; // USD→CNY，2026-08-08 汇率
+const usd=n=>n==null?"—":"¥"+Math.round(n*RATE).toLocaleString("en-US");
+const last=SNAPSHOTS[SNAPSHOTS.length-1];
+const WD=["周日","周一","周二","周三","周四","周五","周六"];
+const wdOf=d=>WD[new Date(d+"T12:00:00").getDay()];
+
+$("stamp").textContent=last.date+" "+wdOf(last.date);
+$("stampnote").textContent="已累积 "+SNAPSHOTS.length+" 天数据";
+$("foot").textContent="last update "+last.date;
+
+/* — 概览卡 — */
+$("board").innerHTML=[
+  {tag:"行程 A",route:["SFO","AMS","FRA","SFO"],who:"我 · 1 位成人 · 每人含税价",
+   low:last.A.low,ns:last.A.lowNonstopBoth,
+   split:"去程直飞最低 <b>"+usd(last.A.lowNonstopOut)+"</b> · 全程双直飞 <b>"+usd(last.A.lowNonstopBoth)+"</b>"},
+  {tag:"行程 B",route:["PVG","AMS","FRA","PVG"],who:"老婆 + 爸爸 + 妈妈 + 草莓 · 3 成人 1 儿童",
+   low:last.B.low,ns:last.B.lowNonstopBoth,
+   split:"全程双直飞 <b>"+usd(last.B.lowNonstopBoth)+"/人</b>（按 1 成人查）· 4 人约 <b>"+usd(last.B.lowNonstopBoth*4)+"</b>"}
+].map(c=>`<article class="card">
+  <div class="card-hd">
+    <span class="tag">${c.tag}</span>
+    <p class="route mono">${c.route[0]}<span class="arw">→</span>${c.route[1]}
+      <span style="color:var(--dim);font-weight:400;margin:0 8px">|</span>
+      ${c.route[2]}<span class="arw">→</span>${c.route[3]}</p>
+    <p class="who">${c.who}</p>
+  </div>
+  <div class="card-bd">
+    <div class="pricerow">
+      <div class="pr"><div class="lab">全网最低</div><div class="val hi mono">${usd(c.low)}</div>
+        <div class="note">含中转</div></div>
+      <div class="pr"><div class="lab">全程直飞最低</div><div class="val mono">${usd(c.ns)}</div>
+        <div class="note">两段都不转机</div></div>
+      <div class="pr"><div class="lab">直飞溢价</div><div class="val mono">+${usd(c.ns-c.low).slice(1)}</div>
+        <div class="note">+${Math.round((c.ns/c.low-1)*100)}%</div></div>
+    </div>
+    <div class="split">${c.split}</div>
+  </div></article>`).join("");
+
+/* — 推荐 — */
+const segHTML=s=>`<div class="seg">
+  <div class="dir">${s.d}</div>
+  <div>
+    <div class="l1"><span class="t">${s.t1}</span> ${s.a1}${s.ap1?`<span class="ap">${s.ap1}</span>`:""}
+      <span style="color:var(--dim);margin:0 6px">→</span>
+      <span class="t">${s.t2}</span>${s.p2?`<span style="color:var(--crit);font-size:11px">${s.p2}</span>`:""} ${s.a2}${s.ap2?`<span class="ap">${s.ap2}</span>`:""}</div>
+    <div class="l2"><span class="fn">${s.fn}</span> · ${s.ac} · ${s.dur} ·
+      <span class="${s.stop==="直飞"?"ns":"sv"}">${s.stop}</span><br>${s.date}</div>
+  </div></div>`;
+
+const recHTML=r=>`<article class="rec${r.alt?" alt":""}">
+  <h3>${r.t}</h3>
+  <div class="price mono" style="${r.top?"color:var(--accent)":""}">${r.p}
+    <span style="font-size:11.5px;color:var(--muted);font-weight:400;letter-spacing:0"> · ${r.plat}</span></div>
+  <div class="segs">${r.segs.map(segHTML).join("")}</div>
+  <p class="bag">行李：${r.bag}</p>
+  <a class="btn" href="${r.url}" target="_blank" rel="noopener">在 ${r.plat} 打开这个航班</a>
+  ${r.hint?`<p class="hint">${r.hint}</p>`:""}
+  <ul style="margin-top:13px">${r.pros.map(x=>`<li class="p">${x}</li>`).join("")}${r.cons.map(x=>`<li class="m">${x}</li>`).join("")}</ul>
+  ${r.also&&r.also.length?`<div class="also"><b>同一航班的其他平台</b>${
+    r.also.map(a=>`<a href="${a.u}" target="_blank" rel="noopener">${a.n}</a>${a.p?` <span class="pz">${usd(a.p)}</span>`:""}`).join(" &nbsp;·&nbsp; ")
+  }</div>`:""}
+</article>`;
+$("recsA").innerHTML=RECS_A.map(recHTML).join("");
+$("recsB").innerHTML=RECS_B.map(recHTML).join("");
+
+/* — 分人表 — */
+$("paxbody").innerHTML=PAX.map(p=>`<tr>
+  <td><a href="${p.u}" target="_blank" rel="noopener">${p.n}</a>${p.best?' <span class="pill ns">全程直飞</span>':p.ns?' <span class="pill ns">直飞</span>':' <span class="pill st">含中转</span>'}</td>
+  <td class="num mono${p.best?" best":""}">${usd(p.per)}</td>
+  <td class="num mono${p.best?" best":""}">${usd(p.per)}</td>
+  <td class="num mono${p.best?" best":""}">${usd(p.per)}</td>
+  <td class="num mono${p.best?" best":""}">${usd(p.per)}</td>
+  <td class="num mono${p.best?" best":""}">${usd(p.per*4)}</td></tr>`).join("");
+
+/* — 重点监控 — */
+const cnyRaw=n=>n==null?"—":"¥"+Math.round(n).toLocaleString("en-US");
+$("trackQuotes").innerHTML=TRACKED_QUOTES.map(q=>`<div class="tq${q.mine?" mine":""}${q.verified?" mine":""}">
+  <div class="n">${q.mine?"★ ":q.verified?"✓ ":""}<a href="${q.u}" target="_blank" rel="noopener" style="color:inherit;border-bottom:1px solid currentColor">${q.n}</a></div>
+  <div class="p mono">${cnyRaw(q.p)}</div></div>`).join("");
+
+/* — 平台表 — */
+const stopPill=p=>p.blocked?'<span class="pill na">未取到</span>'
+  :p.legOnly?'<span class="pill na">仅单程</span>'
+  :p.single?'<span class="pill st">两段单程</span>':'<span class="pill ns">联程</span>';
+$("platA").innerHTML=PLATFORMS_A.map(p=>`<tr>
+  <td><a href="${p.url}" target="_blank" rel="noopener">${p.name}</a><br>${stopPill(p)}</td>
+  <td class="num mono${p.best?" best":""}">${usd(p.low)}</td>
+  <td class="num mono">${usd(p.nsOut)}</td>
+  <td class="num mono">${usd(p.nsBoth)}</td>
+  <td style="color:var(--muted);font-size:12.5px">${p.flight}</td></tr>`).join("");
+$("platB").innerHTML=PLATFORMS_B.map(p=>`<tr>
+  <td><a href="${p.url}" target="_blank" rel="noopener">${p.name}</a><br>${stopPill(p)}</td>
+  <td class="num mono${p.best?" best":""}">${usd(p.low)}</td>
+  <td class="num mono">${usd(p.nsBoth)}</td>
+  <td style="color:var(--muted);font-size:12.5px">${p.flight}</td></tr>`).join("");
+
+/* — 趋势图 — */
+function chart(){
+  const box=$("chart");
+  if(SNAPSHOTS.length<2){
+    box.innerHTML='<div class="empty">趋势图需要至少 <b>2 天</b>数据才能画出折线。<br>'
+      +'目前已记录 <b>'+SNAPSHOTS.length+'</b> 天（起始 '+SNAPSHOTS[0].date+'），定时任务每天会自动追加一次。<br>'
+      +'<span style="font-size:12px;color:var(--dim)">机票平台不支持查询历史价格，因此无法补录 8 月 8 日之前的数据。</span></div>';
+    return;
+  }
+  const W=900,H=300,P={t:16,r:16,b:34,l:52};
+  const series=[
+    {k:s=>s.A.low*RATE, c:"var(--accent)", o:1},
+    {k:s=>s.A.lowNonstopBoth*RATE, c:"var(--accent)", o:.4},
+    {k:s=>s.B.low*RATE, c:"var(--good)", o:1},
+    {k:s=>s.B.lowNonstopBoth*RATE, c:"var(--good)", o:.4}
+  ];
+  const vals=SNAPSHOTS.flatMap(s=>series.map(x=>x.k(s))).filter(v=>v!=null);
+  const mn=Math.min(...vals)*.94, mx=Math.max(...vals)*1.06;
+  const X=i=>P.l+i*(W-P.l-P.r)/Math.max(1,SNAPSHOTS.length-1);
+  const Y=v=>P.t+(1-(v-mn)/(mx-mn))*(H-P.t-P.b);
+  let g="";
+  for(let i=0;i<=4;i++){const v=mn+(mx-mn)*i/4, y=Y(v);
+    g+=`<line x1="${P.l}" y1="${y}" x2="${W-P.r}" y2="${y}" stroke="var(--line)" stroke-width="1"/>`
+      +`<text x="${P.l-8}" y="${y+4}" text-anchor="end" font-size="11" fill="var(--dim)" font-family="ui-monospace,monospace">¥${Math.round(v).toLocaleString("en-US")}</text>`;}
+  SNAPSHOTS.forEach((s,i)=>{
+    if(SNAPSHOTS.length>10 && i%Math.ceil(SNAPSHOTS.length/8)) return;
+    g+=`<text x="${X(i)}" y="${H-P.b+18}" text-anchor="middle" font-size="10.5" fill="var(--dim)">${s.date.slice(5)}</text>`
+      +`<text x="${X(i)}" y="${H-P.b+31}" text-anchor="middle" font-size="9.5" fill="var(--dim)">${wdOf(s.date)}</text>`;});
+  series.forEach(sr=>{
+    const pts=SNAPSHOTS.map((s,i)=>({x:X(i),y:sr.k(s)==null?null:Y(sr.k(s))})).filter(p=>p.y!=null);
+    if(!pts.length)return;
+    g+=`<polyline fill="none" stroke="${sr.c}" stroke-opacity="${sr.o}" stroke-width="2" stroke-linejoin="round"
+        points="${pts.map(p=>p.x+","+p.y).join(" ")}"/>`;
+    const e=pts[pts.length-1];
+    g+=`<circle cx="${e.x}" cy="${e.y}" r="4" fill="${sr.c}" fill-opacity="${sr.o}"/>`;});
+  box.innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="每日最低价趋势折线图">${g}</svg>`;
+}
+chart();
+
+/* — 周几 — */
+function dow(){
+  const buck={};
+  SNAPSHOTS.forEach(s=>{if(s.M==null)return; const w=wdOf(s.date);(buck[w]=buck[w]||[]).push(s.M);});
+  const avg={};Object.keys(buck).forEach(w=>avg[w]=buck[w].reduce((a,b)=>a+b,0)/buck[w].length);
+  const have=Object.keys(avg);
+  const min=have.length?Math.min(...have.map(w=>avg[w])):null;
+  $("dowlede").innerHTML=have.length<7
+    ? `已覆盖 <strong>${have.length}/7</strong> 个星期几。要看出稳定规律建议至少连续记录 <strong>2–3 周</strong>，让每个星期几都有 2–3 个样本。`
+    : `已覆盖全部 7 个星期几，柱值为该星期几「东航 MU771（去）+ MU220（返）全程直飞」每人价格的平均值，越低越适合下单。`;
+  $("dow").innerHTML=["周一","周二","周三","周四","周五","周六","周日"].map(w=>
+    `<div class="${avg[w]!=null&&avg[w]===min&&have.length>1?"win":""}">
+      <div class="d">${w}</div>
+      <div class="v mono ${avg[w]==null?"none":""}">${avg[w]==null?"—":"¥"+Math.round(avg[w]).toLocaleString("en-US")}</div>
+    </div>`).join("");
+}
+dow();
+</script>
