@@ -352,9 +352,9 @@ const SNAPSHOTS = [
         lowSrc:"Google Flights", lowFlight:"捷蓝 B6434+B6031 经波士顿转机 3h10（全程 16h50，1 次经停）",
         nsOutSrc:"携程（此前读数，今日未单独重新核对该分项）", nsOutFlight:"DL9647 达美（荷航执飞）SFO→AMS 直飞 10h20",
         nsBothSrc:"Google Flights", nsBothFlight:"UA968+LH454 美联航/汉莎航空 两段直飞（Kayak 今日两次弹出人机验证未能核对，已按约定停止尝试并告知用户；改用 Google Flights 多城市搜索交叉验证同一「全网不限航司两段直飞」口径）" },
-    B:{ low:637, lowNonstopBoth:1265, nsBothVerified:true,
+    B:{ low:637, lowNonstopBoth:1265, nsBothVerified:false,
         lowSrc:"飞猪", lowFlight:"南航 CZ8804+CZ345 经北京，多程含税 ¥4,306（全网最低，与昨日 ¥4,305 基本持平）",
-        nsBothSrc:"携程／东航官网", nsBothFlight:"MU771（PVG→AMS 直飞 12h）+ MU220（FRA→PVG 直飞 10h50），东航同航司组合，携程与东航官网今日均显示合计 ¥8,550（较昨日 ¥8,548 基本持平）。Kayak 今日未再尝试（A 行程已触发验证码，避免连续触发同一防护）" },
+        nsBothSrc:"携程／东航官网（口径收窄，非当天全网验证）", nsBothFlight:"Kayak（全网不限航司口径的信息源）今日未能访问，故此点<b>不是</b>「全网口径下最低直飞组合」的当天验证值——退而改用东航 MU771+MU220 同航司组合，携程与东航官网今日均显示合计 ¥8,550。上次（8/9）Kayak 验证的跨航司组合（MU771+CA936）为 ¥7,625，仍是目前已知更低的选项，只是今天没能重新核对，不代表价格已涨到 ¥8,550" },
     M:8550 } // M 来自东航官网 + 携程今日交叉核对（均为 ¥8,550，与昨日 ¥8,548 基本持平，+¥2）
 ];
 
@@ -466,7 +466,7 @@ const RECS_A = [
 ];
 
 const RECS_B = [
-  { t:"强烈推荐 · 全程直飞最低组合（今日已验证）", pv:1128, pCNY:false, plat:"Kayak", url:KAYAK_B+"&fs=stops=0", top:true,
+  { t:"强烈推荐 · 全程直飞最低组合（8/9 已验证，今日待复核）", pv:1128, pCNY:false, plat:"Kayak", url:KAYAK_B+"&fs=stops=0", top:true,
     bag:"含托运行李（东航／国航国际经济舱标准）",
     segs:[
       {d:"去程",date:"10月17日 周六",t1:"12:30",a1:"PVG",ap1:"T1",t2:"18:30",a2:"AMS",ap2:"史基浦",
