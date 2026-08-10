@@ -259,15 +259,16 @@ footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);font-si
 <!-- ══ 4. 趋势 ══ -->
 <section>
   <h2>价格趋势 <span>/ Price trend</span></h2>
-  <p class="lede">每天自动记录一次全网最低价与全程直飞最低价。折线随天数增长，用来判断「周几买最便宜」。</p>
+  <p class="lede">每天自动记录一次全网最低价与全程直飞最低价。<strong>「全程直飞」统一口径为：全网范围内、去程+回程两段都直飞、不限航司的最低价</strong>（即 Kayak 直飞筛选能搜到的跨航司组合，不是只看某一家航司）。折线随天数增长，用来判断「周几买最便宜」；点上标了每天的具体价格，空心虚线点表示当天口径来源受阻、退而用更窄范围的价格顶替（详见图下说明）。</p>
   <div class="chartbox">
     <div class="legend">
       <span><i style="background:var(--accent)"></i>A · 全网最低</span>
-      <span><i style="background:var(--accent);opacity:.4"></i>A · 全程直飞</span>
+      <span><i style="background:var(--accent);opacity:.4"></i>A · 全程直飞（不限航司）</span>
       <span><i style="background:var(--good)"></i>B · 全网最低（每人）</span>
-      <span><i style="background:var(--good);opacity:.4"></i>B · 全程直飞（每人）</span>
+      <span><i style="background:var(--good);opacity:.4"></i>B · 全程直飞（每人，不限航司）</span>
     </div>
     <div id="chart"></div>
+    <p class="hint" id="chartfoot" style="display:none">* 当天该点未能查到不限航司口径的价格（信息源被平台拦截），改用能取到的更窄范围（通常是同航司）价格顶替，仅供参考，不代表口径改变。</p>
   </div>
 </section>
 
@@ -306,14 +307,16 @@ footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);font-si
 
 <script>
 /* ═══════════ 数据区 · 每日定时任务在此追加 ═══════════ */
+// lowNonstopBoth 统一口径：全网范围内、两段（去程+回程）都直飞、不限航司的最低价（即 Kayak fs=stops=0 这类跨航司直飞搜索能给出的数字）。
+// nsBothVerified=false 表示当天该口径的主要信息源（Kayak）访问受阻，退而用同航司/更窄范围的价格顶替，图表上会标 * 并用空心点区分，不代表当天口径变了。
 const SNAPSHOTS = [
   { date:"2026-08-08",
-    A:{ low:794, lowNonstopOut:916, lowNonstopBoth:984 },
-    B:{ low:637, lowNonstopBoth:1120 },
+    A:{ low:794, lowNonstopOut:916, lowNonstopBoth:984, nsBothVerified:true },
+    B:{ low:637, lowNonstopBoth:1120, nsBothVerified:true },
     M:8548 }, // M = 东航 MU771（去）+ MU220（返）全程直飞，人民币原价，每人，来自携程 App 实付价 / 东航官网直连核对
   { date:"2026-08-09",
-    A:{ low:781, lowNonstopOut:906, lowNonstopBoth:984 },
-    B:{ low:637, lowNonstopBoth:1195 },
+    A:{ low:781, lowNonstopOut:906, lowNonstopBoth:984, nsBothVerified:true },
+    B:{ low:637, lowNonstopBoth:1195, nsBothVerified:false }, // Kayak 当天触发人机验证未能取到跨航司直飞价，改用飞猪 MU771+MU220 同航司价 ¥8,075 顶替
     M:8548 } // M 来自东航官网今日直连核对（多段搜索 MU771+MU220，含税参考价 ¥8,548，与昨日一致）
 ];
 
@@ -570,18 +573,18 @@ function chart(){
       +'<span style="font-size:12px;color:var(--dim)">机票平台不支持查询历史价格，因此无法补录 8 月 8 日之前的数据。</span></div>';
     return;
   }
-  const W=900,H=300,P={t:16,r:16,b:34,l:52};
+  const W=900,H=360,P={t:16,r:16,b:34,l:52};
   const series=[
-    {k:s=>s.A.low*RATE, c:"var(--accent)", o:1},
-    {k:s=>s.A.lowNonstopBoth*RATE, c:"var(--accent)", o:.4},
-    {k:s=>s.B.low*RATE, c:"var(--good)", o:1},
-    {k:s=>s.B.lowNonstopBoth*RATE, c:"var(--good)", o:.4}
+    {k:s=>s.A.low*RATE, c:"var(--accent)", o:1, dy:-10, va:s=>true},
+    {k:s=>s.A.lowNonstopBoth*RATE, c:"var(--accent)", o:.55, dy:16, va:s=>s.A.nsBothVerified!==false},
+    {k:s=>s.B.low*RATE, c:"var(--good)", o:1, dy:-10, va:s=>true},
+    {k:s=>s.B.lowNonstopBoth*RATE, c:"var(--good)", o:.55, dy:16, va:s=>s.B.nsBothVerified!==false}
   ];
   const vals=SNAPSHOTS.flatMap(s=>series.map(x=>x.k(s))).filter(v=>v!=null);
-  const mn=Math.min(...vals)*.94, mx=Math.max(...vals)*1.06;
+  const mn=Math.min(...vals)*.90, mx=Math.max(...vals)*1.10;
   const X=i=>P.l+i*(W-P.l-P.r)/Math.max(1,SNAPSHOTS.length-1);
   const Y=v=>P.t+(1-(v-mn)/(mx-mn))*(H-P.t-P.b);
-  let g="";
+  let g="", anyUnverified=false;
   for(let i=0;i<=4;i++){const v=mn+(mx-mn)*i/4, y=Y(v);
     g+=`<line x1="${P.l}" y1="${y}" x2="${W-P.r}" y2="${y}" stroke="var(--line)" stroke-width="1"/>`
       +`<text x="${P.l-8}" y="${y+4}" text-anchor="end" font-size="11" fill="var(--dim)" font-family="ui-monospace,monospace">¥${Math.round(v).toLocaleString("en-US")}</text>`;}
@@ -590,13 +593,24 @@ function chart(){
     g+=`<text x="${X(i)}" y="${H-P.b+18}" text-anchor="middle" font-size="10.5" fill="var(--dim)">${s.date.slice(5)}</text>`
       +`<text x="${X(i)}" y="${H-P.b+31}" text-anchor="middle" font-size="9.5" fill="var(--dim)">${wdOf(s.date)}</text>`;});
   series.forEach(sr=>{
-    const pts=SNAPSHOTS.map((s,i)=>({x:X(i),y:sr.k(s)==null?null:Y(sr.k(s))})).filter(p=>p.y!=null);
+    const pts=SNAPSHOTS.map((s,i)=>({x:X(i),y:sr.k(s)==null?null:Y(sr.k(s)),v:sr.k(s),ok:sr.va(s),i})).filter(p=>p.y!=null);
     if(!pts.length)return;
     g+=`<polyline fill="none" stroke="${sr.c}" stroke-opacity="${sr.o}" stroke-width="2" stroke-linejoin="round"
         points="${pts.map(p=>p.x+","+p.y).join(" ")}"/>`;
-    const e=pts[pts.length-1];
-    g+=`<circle cx="${e.x}" cy="${e.y}" r="4" fill="${sr.c}" fill-opacity="${sr.o}"/>`;});
-  box.innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="每日最低价趋势折线图">${g}</svg>`;
+    pts.forEach(p=>{
+      if(!p.ok) anyUnverified=true;
+      g+= p.ok
+        ? `<circle cx="${p.x}" cy="${p.y}" r="3.5" fill="${sr.c}" fill-opacity="${sr.o}"/>`
+        : `<circle cx="${p.x}" cy="${p.y}" r="4.5" fill="var(--surface)" stroke="${sr.c}" stroke-opacity="${sr.o}" stroke-width="2" stroke-dasharray="2.5,2"/>`;
+      const anchor = p.i===0 ? "start" : p.i===SNAPSHOTS.length-1 ? "end" : "middle";
+      const lx = p.i===0 ? p.x-8 : p.i===SNAPSHOTS.length-1 ? p.x+8 : p.x;
+      g+= `<text x="${lx}" y="${p.y+sr.dy}" text-anchor="${anchor}" font-size="10.5" font-weight="700"
+            fill="${sr.c}" fill-opacity="${Math.max(sr.o,.9)}" font-family="ui-monospace,monospace"
+            paint-order="stroke" stroke="var(--surface)" stroke-width="3">¥${Math.round(p.v).toLocaleString("en-US")}${p.ok?"":"*"}</text>`;
+    });
+  });
+  box.innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="每日最低价趋势折线图，含每个数据点的具体价格">${g}</svg>`;
+  const foot=$("chartfoot"); if(foot) foot.style.display=anyUnverified?"block":"none";
 }
 chart();
 
