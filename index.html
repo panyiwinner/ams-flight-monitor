@@ -216,19 +216,7 @@ footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);font-si
   <div class="recs" id="recsB"></div>
 </section>
 
-<!-- ══ 3. 分人价格 ══ -->
-<section>
-  <h2>三大一小 · 每人价格拆分 <span>/ Per-passenger</span></h2>
-  <p class="lede">在 Trip.com 用「3 成人 + 1 儿童」实际下单查询（页面顶部显示 4 Passengers），同时给出单人价与总价，可直接反推每人成本。<strong>本行程儿童与成人同价</strong>，无儿童折扣，总价正好是单价 × 4。点方案名可直接打开对应搜索结果。<br><strong>注意</strong>：携程和飞猪的多程页只支持按 1 位成人查（¥ 报价），所以本表统一采用 Trip.com 的 4 人实际报价，便于横向对比；实际下单时携程／飞猪的同班次可能更便宜，见上方推荐卡。</p>
-  <div class="tblwrap">
-    <table>
-      <thead><tr><th>方案</th><th>老婆</th><th>爸爸</th><th>妈妈</th><th>草莓（儿童）</th><th>4 人合计</th></tr></thead>
-      <tbody id="paxbody"></tbody>
-    </table>
-  </div>
-</section>
-
-<!-- ══ 4. 平台比价 ══ -->
+<!-- ══ 3. 平台比价 ══ -->
 <section>
   <h2>平台实测比价 <span>/ 行程 A · SFO → AMS · FRA → SFO</span></h2>
   <p class="lede">全部为 Chrome 浏览器实际打开各平台搜索页读取的价格，统一折算为人民币、每人含税价（境外平台原始报价为美元，按当日汇率折算，见下方说明）。点平台名可直接跳转到该搜索结果页。</p>
@@ -246,7 +234,7 @@ footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);font-si
   </table></div>
 </section>
 
-<!-- ══ 4.5 重点监控 ══ -->
+<!-- ══ 3.5 重点监控 ══ -->
 <section>
   <h2>重点监控 <span>/ 东航 MU771＋MU220 全程直飞</span></h2>
   <p class="lede">这是你实际在携程 App 下单到支付前一步的航班——去程 <b>MU771</b>（上海→阿姆斯特丹）、返程 <b>MU220</b>（法兰克福→上海），全程东航直飞、同一航司。以此为基准，持续对比各平台对同一航班的报价。</p>
@@ -268,7 +256,7 @@ footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);font-si
   </div>
 </section>
 
-<!-- ══ 5. 趋势 ══ -->
+<!-- ══ 4. 趋势 ══ -->
 <section>
   <h2>价格趋势 <span>/ Price trend</span></h2>
   <p class="lede">每天自动记录一次全网最低价与全程直飞最低价。折线随天数增长，用来判断「周几买最便宜」。</p>
@@ -290,7 +278,7 @@ footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);font-si
   <div class="dow" id="dow"></div>
 </section>
 
-<!-- ══ 6. 说明 ══ -->
+<!-- ══ 5. 说明 ══ -->
 <section>
   <h2>数据说明与注意事项</h2>
   <div class="notes">
@@ -345,43 +333,43 @@ const FLIGGY_B="https://sijipiao.fliggy.com/ie/flight_search_result.htm?searchJo
 const PLATFORMS_A = [
   { name:"Kayak", url:KAYAK_A,
     low:781, best:true, nsOut:null, nsBoth:984,
-    flight:"多程超低价 ¥5,280（1 次经停）：捷蓝经波士顿转 1h+伊比利亚经达拉斯转 18h52；全程双直飞 UA968+UA059 ¥6,652（价格较昨日下探，成为今日全网最低）" },
+    flight:"多程超低价 ¥5,280（1 次经停）：捷蓝 B6 434（SFO→BOS）+B6 31（BOS→AMS）经波士顿转 3h10；全程双直飞 UA968+UA059 ¥6,652（价格较昨日下探，成为今日全网最低）" },
   { name:"Expedia", url:EXP_A,
     low:794, nsOut:916, nsBoth:null,
-    flight:"捷蓝 7:30 SFO → 波士顿转 3h10 → 9:20+1 AMS（16h50）；去程直飞起价 ¥6,192（达美/荷航 DL9647）" },
-  { name:"携程", url:CTRIP_A,
-    low:859, nsOut:906, nsBoth:null,
-    flight:"多程超低价 ¥5,804：达美 DL690+DL070 经亚特兰大转 21h30。直飞 DL9647 ¥6,127 为最低直飞、KL606 ¥6,230、UA968 ¥6,461（与昨日基本一致）" },
+    flight:"捷蓝 B6 434+B6 31，7:30 SFO → 波士顿转 3h10 → 9:20+1 AMS（16h50）；去程直飞起价 ¥6,192（达美/荷航 DL9647）" },
+  { name:"携程", url:CTRIP_A, nativeCNY:true,
+    low:5804, nsOut:6127, nsBoth:null,
+    flight:"多程超低价 ¥5,804：达美 DL690+DL070 经亚特兰大转 21h30。直飞 DL9647 ¥6,127 为最低直飞（同价位 KL606 ¥6,230）、UA968 ¥6,461" },
   { name:"Trip.com", url:TRIP_A,
     low:859, nsOut:944, nsBoth:null,
     flight:"达美+维珍 23:30 SFO 经亚特兰大转 8h36 → 21h30；直飞 KL606/DL9647 ¥6,381" },
-  { name:"飞猪", url:FLIGGY_A,
-    low:944, nsOut:null, nsBoth:999,
-    flight:"多程超低价 ¥6,380：加航经蒙特利尔转 25h36。<strong>直飞价回落至 ¥6,750（UA968）</strong>，较昨日异常飙升的 ¥10,901 恢复正常，与其他平台基本一致" },
+  { name:"飞猪", url:FLIGGY_A, nativeCNY:true,
+    low:6380, nsOut:null, nsBoth:6750,
+    flight:"多程超低价 ¥6,380：加航经蒙特利尔转 25h36。<strong>直飞价（UA968）回落至 ¥6,750</strong>，较昨日异常飙升的 ¥10,901 恢复正常，与其他平台基本一致" },
   { name:"Super.com", url:SUPER,
     low:837, nsOut:489, nsBoth:1974, single:true,
     flight:"无多程功能，两段单程相加。今日未重新核对，沿用上次读数：SFO→AMS ¥2,346（JetBlue 经波士顿）／直飞 UA968 ¥3,306；FRA→SFO ¥3,312（美航经DFW）／直飞汉莎 ¥10,039。均为会员价" },
   { name:"Google Flights", url:"https://www.google.com/travel/flights?q=Flights%20from%20SFO%20to%20AMS%20on%202026-10-17%20oneway&curr=USD&hl=en",
-    low:788, nsOut:519, nsBoth:2058, single:true,
-    flight:"两段单程相加：SFO→AMS ¥2,454（JetBlue经BOS）+ FRA→SFO ¥2,873（美航经DFW）；直飞合计 ¥3,508+¥10,404=¥13,912" },
+    low:790, nsOut:519, nsBoth:2065, single:true,
+    flight:"两段单程相加：SFO→AMS B6 434+B6 31 ¥2,454（JetBlue经BOS）+ FRA→SFO AA 71+AA 1430 ¥2,887（美航经DFW）；直飞合计 ¥3,508+¥10,451=¥13,959" },
   { name:"Booking.com", url:"https://flights.booking.com/flights/SFO.AIRPORT-AMS.AIRPORT/?type=ONEWAY&adults=1&cabinClass=ECONOMY&from=SFO.AIRPORT&to=AMS.AIRPORT&depart=2026-10-17&sort=CHEAPEST",
     low:null, nsOut:null, nsBoth:null, legOnly:true, blocked:true,
     flight:"今日页面跳转到 not-available 提示页，未能取到报价，如实留空（昨日曾查到单程最低 ¥2,454）" }
 ];
 
 const PLATFORMS_B = [
-  { name:"飞猪", url:FLIGGY_B,
-    low:637, best:true, nsBoth:1195,
-    flight:"多程含税 ¥4,305：南航 07:50 浦东/虹桥经北京 4h05 → 18:40 AMS（16h50），全网最低。<strong>直飞 MU771+MU220 回落至 ¥8,075</strong>（昨日 ¥8,446），全网最低直飞组合" },
+  { name:"飞猪", url:FLIGGY_B, nativeCNY:true,
+    low:4305, best:true, nsBoth:8075,
+    flight:"多程含税 ¥4,305：南航 CZ8804+CZ345 07:50 浦东/虹桥经北京 4h05 → 18:40 AMS（16h50），全网最低。<strong>直飞 MU771+MU220 回落至 ¥8,075</strong>（昨日 ¥8,446），全网最低直飞组合" },
   { name:"Kayak", url:KAYAK_B,
     low:null, nsBoth:null, blocked:true,
-    flight:"今日访问触发人机验证页（sitecaptcha），按规定不做验证码破解，如实留空未取到（昨日曾查到全程直飞最低 ¥7,571，东航 MU771 出 + 国航 CA936 回）" },
-  { name:"携程", url:CTRIP_B,
-    low:705, nsBoth:1257,
-    flight:"多程超低价 ¥4,764：南航经北京（虹桥出发）16h5m + 回程经广州 15h45。直飞最低东航 MU771 ¥8,498（今日「只看直飞」结果中排第一，未见更低的 KL896 报价）" },
+    flight:"今日访问反复触发人机验证页（sitecaptcha，含清缓存重试与内部导航），按规定不做验证码破解，如实留空未取到（昨日曾查到全程直飞最低 ¥7,571，东航 MU771 出 + 国航 CA936 回，今日未能复核）" },
+  { name:"携程", url:CTRIP_B, nativeCNY:true,
+    low:4764, nsBoth:8498,
+    flight:"多程超低价 ¥4,764：南航 CZ8804+CZ345 经北京（虹桥出发）16h5m + 回程 CZ332+CZ3523 经广州 15h45。直飞最低东航 MU771 ¥8,498（今日「只看直飞」结果中排第一，未见更低的 KL896 报价）" },
   { name:"Trip.com", url:TRIP_B,
     low:732, nsBoth:1257,
-    flight:"按 3大1小 实查。最低：南航经北京/广州转 4,949；直飞最低东航 MU771 ¥8,497/人；KLM KL896 ¥8,991、MU1551 ¥9,545" },
+    flight:"按 3大1小 实查。最低：南航经北京/广州转 ¥4,948；直飞最低东航 MU771 ¥8,497/人；KLM KL896 ¥8,991、MU1551 ¥9,545" },
   { name:"Expedia", url:EXP_B,
     low:732, nsBoth:1131,
     flight:"南航 07:50 经北京大兴 4h05 → AMS（16h50）；东航 MU771 直飞 ¥7,646 为该平台最低直飞（与昨日一致）" },
@@ -391,92 +379,85 @@ const PLATFORMS_B = [
   { name:"Super.com", url:SUPER,
     low:797, nsBoth:null, single:true,
     flight:"无多程功能，两段单程相加。今日未重新核对，沿用上次读数：PVG→AMS ¥2,096（南航经北京）+ FRA→PVG ¥3,292（越南航空经胡志明市转 2h45）。均为会员价" },
-  { name:"东方航空官网", url:CEAIR_URL,
-    low:null, nsBoth:1264.5,
+  { name:"东方航空官网", url:CEAIR_URL, nativeCNY:true,
+    low:null, nsBoth:8548,
     flight:"直连「多段」搜索今日再次核对：MU771 直飞（PVG→AMS）＋ MU220 直飞（FRA→PVG），经济舱含税参考价 ¥8,548，与昨日、携程 App 实付价完全一致，含 1 件托运行李、不可退票不可改期。未查到中转选项，故全网最低一栏留空" }
 ];
 
 const RECS_A = [
-  { t:"性价比首选 · 达美/荷航 去程直飞", p:"¥6,127", plat:"携程", url:CTRIP_A, top:true,
+  { t:"性价比首选 · 达美 去程直飞", pv:6244, pCNY:true, plat:"携程", url:CTRIP_A, top:true,
     bag:"含托运行李（携程页面标注退改签/行李规定，下单前点开确认）",
     segs:[
       {d:"去程",date:"10月17日 周六",t1:"13:45",a1:"SFO",ap1:"国际航站楼",t2:"09:05",p2:"+1",a2:"AMS",ap2:"史基浦",
        fn:"DL9647 达美（荷航执飞）",ac:"波音 787 · 共享",dur:"10h20",stop:"直飞"},
-      {d:"回程",date:"10月28日 周三",t1:"—",a1:"FRA",t2:"—",a2:"SFO",
-       fn:"选定去程后在第二程选择",ac:"荷航／达美",dur:"—",stop:"以所选为准"}],
-    pros:["去程 10h20 直飞，下午出发次日早上到，时差过渡最舒服","<b>携程 ¥6,127 是全网直飞最低</b>，比 Kayak／Expedia 的 ¥6,192 还省 ¥68","同班次挂 KL606 荷航自己的号是 ¥6,230，两者机上体验完全一样","天合联盟，可累积达美/东航里程"],
-    cons:["是共享航班，值机柜台认荷航，别跑错航站楼","比全网最低价方案贵 ¥757","第二程要自己选，注意别选到过夜中转的"],
-    hint:"打开就是多程结果页，去程列表里 <b>DL9647 ¥6,127</b> 和 <b>KL606 ¥6,230</b> 都在前三条，点「选为第1程」再挑回程。",
-    also:[{n:"Kayak",p:916,u:KAYAK_A},{n:"Expedia",p:916,u:EXP_A},{n:"Trip.com",p:944,u:TRIP_A}] },
+      {d:"回程",date:"10月28日 周三",t1:"06:50",a1:"FRA",ap1:"T3",t2:"12:45",a2:"SFO",ap2:"国际航站楼",
+       fn:"DL9526+DL9380 达美航空",ac:"巴航工190→波音787",dur:"13h55",stop:"中转 1h50 · AMS"}],
+    pros:["去程 DL9647 直飞 10h20，下午出发次日早上到，时差过渡最舒服","携程这个组合的<b>实际下单总价 ¥6,244</b>，是目前能订到的确切价格（去程直飞起价单独看是 ¥6,127）","回程经阿姆斯特丹转机仅 1h50，衔接紧凑不用久等","天合联盟，可累积达美/东航里程"],
+    cons:["回程 DL9526 航段机型是巴航工 190 支线客机（中型机），舒适度不如宽体机","比全网最低总价（Kayak 一次经停 ¥5,280）贵约 ¥964","是共享航班，值机柜台认荷航／达美，别跑错航站楼"],
+    hint:"打开后先选第1程 <b>DL9647</b>（¥6,127 起），第2程默认排序第一条即是 <b>DL9526+DL9380</b> 这个总价 ¥6,244 的组合。",
+    also:[{n:"Kayak（去程同款直飞）",p:916,u:KAYAK_A},{n:"Expedia（去程同款直飞）",p:916,u:EXP_A}] },
 
-  { t:"最省 · Expedia 一次经停", p:"¥5,368", plat:"Expedia", url:EXP_A,
+  { t:"最省 · Expedia 一次经停", pv:794, pCNY:false, plat:"Expedia", url:EXP_A,
     bag:"经济舱，具体行李额度以出票时票价条款为准",
     segs:[
       {d:"去程",date:"10月17日 周六",t1:"07:30",a1:"SFO",t2:"09:20",p2:"+1",a2:"AMS",ap2:"史基浦",
-       fn:"捷蓝航空",ac:"经波士顿",dur:"16h50",stop:"中转 3h10 · BOS"},
+       fn:"B6 434+B6 31 捷蓝航空",ac:"经波士顿转 3h10",dur:"16h50",stop:"中转 3h10 · BOS"},
       {d:"回程",date:"10月28日 周三",t1:"—",a1:"FRA",t2:"—",a2:"SFO",
-       fn:"由平台组合",ac:"经济舱",dur:"—",stop:"中转 1 次"}],
-    pros:["全网最低的真联程价，比直飞省 ¥757","去程只中转波士顿一次，时长 16h50，比之前查到的经停方案更短"],
-    cons:["回程航段仍需在结果页确认转机地点和时长","建议下单前核对是否为基础经济舱（不含托运行李）"],
-    hint:"打开后按价格从低到高排序，第一屏即是这条 ¥5,367 的捷蓝组合。",
-    also:[{n:"携程（达美经亚特兰大 ¥5,804）",p:859,u:CTRIP_A},{n:"Trip.com（达美+维珍经亚特兰大）",p:859,u:TRIP_A}] },
+       fn:"由平台组合（经济舱，中转 1 次；参考同日 Google Flights 报价为美航 AA71+AA1430 经达拉斯，具体以 Expedia 结果页显示为准）",ac:"经济舱",dur:"—",stop:"中转 1 次"}],
+    pros:["全网最低的真联程价，比目前最低直飞总价(¥6,244)省约 ¥877","去程只中转波士顿一次，时长 16h50，用的是捷蓝自有航班 B6 434+B6 31"],
+    cons:["回程航段的具体承运航司需在 Expedia 结果页确认（不同批次可能不同）","建议下单前核对是否为基础经济舱（不含托运行李）"],
+    hint:"打开后按价格从低到高排序，第一屏即是这条 ¥5,367 的捷蓝组合（去程 B6 434+B6 31）。",
+    also:[{n:"携程（达美经亚特兰大 ¥5,804）",p:5804,cny:true,u:CTRIP_A},{n:"Trip.com（达美+维珍经亚特兰大）",p:859,u:TRIP_A}] },
 
-  { t:"最稳 · 全程双直飞", p:"¥6,653", plat:"Kayak", url:KAYAK_A+"&fs=stops=0", alt:true,
+  { t:"最稳 · 全程双直飞", pv:984, pCNY:false, plat:"Kayak", url:KAYAK_A+"&fs=stops=0", alt:true,
     bag:"含随身行李；两段均为主流航司正常经济舱",
     segs:[
       {d:"去程",date:"10月17日 周六",t1:"14:45",a1:"SFO",ap1:"T3",t2:"10:20",p2:"+1",a2:"AMS",ap2:"史基浦",
        fn:"UA968 美国联合航空",ac:"波音 777",dur:"10h35",stop:"直飞"},
       {d:"回程",date:"10月28日 周三",t1:"10:10",a1:"FRA",ap1:"T1",t2:"13:35",a2:"SFO",ap2:"国际航站楼",
        fn:"UA059 美国联合航空",ac:"波音 777",dur:"11h25",stop:"直飞"}],
-    pros:["两段都不转机，行李直挂，误机风险最低","回程 10:10 起飞，当天下午 13:35 到旧金山，不用倒时差过夜","比全网最低价只贵 ¥1,284，换来两段都直飞"],
-    cons:["行程 A 里最贵的一档","FRA→SFO 直飞单独买要 ¥10,451，只有打包成开口联程才有这个价"],
+    pros:["两段都不转机，行李直挂，误机风险最低","回程 10:10 起飞，当天下午 13:35 到旧金山，不用倒时差过夜","比全网最低价只贵 ¥1,372，换来两段都直飞"],
+    cons:["行程 A 里最贵的一档","FRA→SFO 直飞单独买要 ¥10,404，只有打包成开口联程才有这个价"],
     hint:"链接已带上「直飞」筛选（fs=stops=0），打开就是全程双直飞的结果。KLM/达美同款直飞组合为 ¥6,679（Trip.com）。",
     also:[{n:"Trip.com（KLM/达美同款）",p:988,u:TRIP_A}] }
 ];
 
 const RECS_B = [
-  { t:"强烈推荐 · 全程直飞最低组合", p:"¥7,571 / 人", plat:"Kayak", url:KAYAK_B+"&fs=stops=0", top:true,
-    bag:"含托运行李（东航／国航国际经济舱标准）",
-    segs:[
-      {d:"去程",date:"10月17日 周六",t1:"12:30",a1:"PVG",ap1:"T1",t2:"18:30",a2:"AMS",ap2:"史基浦",
-       fn:"MU771 中国东方航空",ac:"波音 777",dur:"12h00",stop:"直飞"},
-      {d:"回程",date:"10月28日 周三",t1:"18:40",a1:"FRA",t2:"12:40",p2:"+1",a2:"PVG",ap2:"T2",
-       fn:"CA936 中国国际航空",ac:"空客 A350",dur:"11h00",stop:"直飞"}],
-    pros:["<b>两段全直飞</b>，三位长辈和草莓不用拖行李转机 —— 这是最关键的一点","<b>全网所有直飞组合里最便宜</b>，比东航两段（MU771+MU220）省 ¥913","去程中午飞、当晚到，当天就能休息；回程国航空客 A350 机型新","按 1 人查得出的价格，4 人一起订通常也能拿到接近这个单价"],
-    cons:["<b>回程换成国航（非东航）</b>，两段不是同一家航司，行李和值机分开办理","去程和回程不是同一联盟（东航天合 vs 国航星空），不能累积同一常旅客计划"],
-    hint:"链接已带「直飞」筛选（fs=stops=0），打开后按价格排序，第一条即是 MU771+CA936 这个 ¥7,571 的组合。",
-    also:[{n:"携程（KL896 直飞）",p:1232,u:CTRIP_B},{n:"Trip.com（3大1小同查，MU771 直飞）",p:1256,u:TRIP_B}] },
-
-  { t:"同航司省心 · 东航全程直飞", p:"¥8,498 / 人", plat:"携程", url:CTRIP_B,
+  { t:"强烈推荐 · 全程直飞（今日已验证）", pv:8075, pCNY:true, plat:"飞猪", url:FLIGGY_B, top:true,
     bag:"含托运行李（东航国际经济舱标准，通常 2×23kg）",
     segs:[
       {d:"去程",date:"10月17日 周六",t1:"12:30",a1:"PVG",ap1:"T1",t2:"18:30",a2:"AMS",ap2:"史基浦",
        fn:"MU771 中国东方航空",ac:"波音 777",dur:"12h00",stop:"直飞"},
       {d:"回程",date:"10月28日 周三",t1:"13:35",a1:"FRA",ap1:"T3",t2:"07:25",p2:"+1",a2:"PVG",ap2:"T1",
        fn:"MU220 中国东方航空",ac:"波音 777",dur:"10h50",stop:"直飞"}],
-    pros:["<b>PVG→AMS 全网最短的航班，12 小时整</b>","去程中午起飞、当晚落地；两段都是东航波音 777","<b>全程同一家航司</b>，行李直挂、值机方便，中文机组沟通零障碍","比上一条只贵 ¥926，换来出行体验更省心"],
-    cons:["比全网最便宜的直飞组合贵 ¥926，4 人多花约 ¥3,704","是行程 B 里较贵的档位之一"],
-    hint:"打开后在直飞结果里找 <b>东方航空 MU771　12:30→18:30　¥8,498</b>，第二程选同为东航的 MU220。",
-    also:[{n:"飞猪",p:1250,u:FLIGGY_B},{n:"Trip.com（3大1小同查）",p:1256,u:TRIP_B}] },
+    pros:["<b>两段全直飞</b>，三位长辈和草莓不用拖行李转机 —— 这是最关键的一点","<b>今日在飞猪实际验证的全程直飞总价</b>，比携程同款（¥8,498）便宜 ¥423","去程中午飞、当晚落地，当天就能休息；两段都是东航波音 777","<b>全程同一家航司</b>，行李直挂、值机方便，中文机组沟通零障碍"],
+    cons:["东航经济舱通常不可退不可改期，下单前务必再看一遍规则","<b>Kayak 昨日（08-08）曾查到更低的 ¥7,571 跨航司组合</b>（东航 MU771 出 + 国航 CA936 回），但今日 Kayak 反复触发人机验证未能复核，如果不介意回程换航司，仍值得手动上 kayak.com 查一次"],
+    hint:"打开后在直飞结果里找 <b>东方航空 MU771　12:30→18:30</b>，第二程选同为东航的 <b>MU220　13:35→07:25+1</b>，多程含税总价 ¥8,075。",
+    also:[{n:"携程（同款 MU771+MU220，更贵）",p:8498,cny:true,u:CTRIP_B},{n:"Trip.com（3大1小同查）",p:1257,u:TRIP_B}] },
 
-  { t:"省钱 · 南航双经停", p:"¥4,305 / 人", plat:"飞猪", url:FLIGGY_B, alt:true,
+  { t:"同款对比 · 携程东航直飞", pv:8498, pCNY:true, plat:"携程", url:CTRIP_B, alt:true,
+    bag:"含托运行李（东航国际经济舱标准，通常 2×23kg）",
+    segs:[
+      {d:"去程",date:"10月17日 周六",t1:"12:30",a1:"PVG",ap1:"T1",t2:"18:30",a2:"AMS",ap2:"史基浦",
+       fn:"MU771 中国东方航空",ac:"波音 777",dur:"12h00",stop:"直飞"},
+      {d:"回程",date:"10月28日 周三",t1:"13:35",a1:"FRA",ap1:"T3",t2:"07:25",p2:"+1",a2:"PVG",ap2:"T1",
+       fn:"MU220 中国东方航空",ac:"波音 777",dur:"10h50",stop:"直飞"}],
+    pros:["<b>PVG→AMS 全网最短的航班，12 小时整</b>","去程中午起飞、当晚落地；两段都是东航波音 777，与上一条完全相同的两个航班","携程页面通常更新更及时，付款渠道选择也更多"],
+    cons:["同一航班在<b>飞猪只要 ¥8,075</b>，携程贵 ¥423（4 人多花约 ¥1,692），下单前建议先比价"],
+    hint:"打开后在直飞结果里找 <b>东方航空 MU771　12:30→18:30　¥8,498</b>，第二程选同为东航的 MU220。",
+    also:[{n:"飞猪（同款更便宜）",p:8075,cny:true,u:FLIGGY_B},{n:"Trip.com（3大1小同查）",p:1257,u:TRIP_B}] },
+
+  { t:"省钱 · 南航双经停", pv:4305, pCNY:true, plat:"飞猪", url:FLIGGY_B, alt:true,
     bag:"含托运行李（南航国际经济舱标准，不是廉航基础票）",
     segs:[
       {d:"去程",date:"10月17日 周六",t1:"07:50",a1:"PVG",ap1:"T2",t2:"18:40",a2:"AMS",ap2:"史基浦",
-       fn:"中国南方航空",ac:"经北京大兴",dur:"16h50",stop:"中转 4h05 · PKX"},
+       fn:"CZ8804+CZ345 中国南方航空",ac:"空客330→空客350",dur:"16h50",stop:"中转 4h05 · PKX"},
       {d:"回程",date:"10月28日 周三",t1:"11:25",a1:"FRA",ap1:"T3",t2:"10:10",p2:"+1",a2:"PVG",
-       fn:"中国南方航空",ac:"经广州白云",dur:"15h45",stop:"中转 · CAN"}],
-    pros:["<b>每人 ¥4,305，全网最低</b>，4 人合计约 ¥17,224，比直飞省约 ¥14,196","全程南航，国内转机有中文服务，行李额度大","浦东或虹桥均可出发，携程／飞猪都能查到"],
+       fn:"CZ332+CZ3523 中国南方航空",ac:"波音787",dur:"15h45",stop:"中转 · CAN"}],
+    pros:["<b>每人 ¥4,305，全网最低</b>，4 人合计约 ¥17,220，比目前最低直飞（¥8,075/人）省约 ¥15,080","全程南航，国内转机有中文服务，行李额度大","浦东或虹桥均可出发，携程／飞猪都能查到"],
     cons:["<b>去程 16h50、回程约 15h45，各转一次机</b>","去程 07:50 起飞，全家凌晨四点就得出门","北京转机 4 小时，带三位长辈和孩子体力消耗大","国内段延误会连累国际段，行程容错低"],
-    hint:"打开后第一条「最低价」标签即是（南方航空 等1家航司　07:50 经北京　¥4,305）。",
-    also:[{n:"携程 ¥4,764（虹桥出发）",p:705,u:CTRIP_B},{n:"Kayak",p:709,u:KAYAK_B},{n:"Trip.com",p:732,u:TRIP_B}] }
-];
-
-const PAX = [
-  { n:"东航 MU771 全程直飞（去程 12h，最短）", per:1257, best:true, u:TRIP_B },
-  { n:"荷航 KL896 全程直飞（去程 13h55）", per:1330, ns:true, u:TRIP_B },
-  { n:"南航双经停（去 16h50 / 回约 16h）", per:732, u:TRIP_B },
-  { n:"东航／荷航共享 MU1551 直飞", per:1412, ns:true, u:TRIP_B }
+    hint:"打开后第一条「最低价」标签即是（南方航空 等1家航司　07:50 经北京　¥4,305）。航班号来自携程同类型组合截图核对，飞猪页面班次可能略有差异，请以下单页实际显示为准。",
+    also:[{n:"携程 ¥4,764（虹桥出发）",p:4764,cny:true,u:CTRIP_B},{n:"Kayak（今日未取到）",p:null,u:KAYAK_B},{n:"Trip.com",p:732,u:TRIP_B}] }
 ];
 
 // p 为人民币实际金额（不再乘汇率）；东航官网/携程/飞猪为人民币原始报价，Trip.com 为美元换算
@@ -490,8 +471,12 @@ const TRACKED_QUOTES = [
 
 /* ═══════════ 渲染 ═══════════ */
 const $=id=>document.getElementById(id);
-const RATE=6.76; // USD→CNY，2026-08-08 汇率
+const RATE=6.76; // USD→CNY 参考汇率，仅用于欧美/Google Flights 等美元计价平台；携程/飞猪/东航官网等人民币原生计价平台不做汇率换算，直接用原始¥数字，避免来回换算产生的取整误差
 const usd=n=>n==null?"—":"¥"+Math.round(n*RATE).toLocaleString("en-US");
+const cnyRaw=n=>n==null?"—":"¥"+Math.round(n).toLocaleString("en-US");
+const priceOf=(p,v)=>v==null?"—":(p.nativeCNY?cnyRaw(v):usd(v));
+const recPrice=r=>r.pCNY?cnyRaw(r.pv):usd(r.pv);
+const alsoPrice=a=>a.p==null?"—":(a.cny?cnyRaw(a.p):usd(a.p));
 const last=SNAPSHOTS[SNAPSHOTS.length-1];
 const WD=["周日","周一","周二","周三","周四","周五","周六"];
 const wdOf=d=>WD[new Date(d+"T12:00:00").getDay()];
@@ -541,7 +526,7 @@ const segHTML=s=>`<div class="seg">
 
 const recHTML=r=>`<article class="rec${r.alt?" alt":""}">
   <h3>${r.t}</h3>
-  <div class="price mono" style="${r.top?"color:var(--accent)":""}">${r.p}
+  <div class="price mono" style="${r.top?"color:var(--accent)":""}">${recPrice(r)}
     <span style="font-size:11.5px;color:var(--muted);font-weight:400;letter-spacing:0"> · ${r.plat}</span></div>
   <div class="segs">${r.segs.map(segHTML).join("")}</div>
   <p class="bag">行李：${r.bag}</p>
@@ -549,23 +534,13 @@ const recHTML=r=>`<article class="rec${r.alt?" alt":""}">
   ${r.hint?`<p class="hint">${r.hint}</p>`:""}
   <ul style="margin-top:13px">${r.pros.map(x=>`<li class="p">${x}</li>`).join("")}${r.cons.map(x=>`<li class="m">${x}</li>`).join("")}</ul>
   ${r.also&&r.also.length?`<div class="also"><b>同一航班的其他平台</b>${
-    r.also.map(a=>`<a href="${a.u}" target="_blank" rel="noopener">${a.n}</a>${a.p?` <span class="pz">${usd(a.p)}</span>`:""}`).join(" &nbsp;·&nbsp; ")
+    r.also.map(a=>`<a href="${a.u}" target="_blank" rel="noopener">${a.n}</a>${a.p!=null?` <span class="pz">${alsoPrice(a)}</span>`:""}`).join(" &nbsp;·&nbsp; ")
   }</div>`:""}
 </article>`;
 $("recsA").innerHTML=RECS_A.map(recHTML).join("");
 $("recsB").innerHTML=RECS_B.map(recHTML).join("");
 
-/* — 分人表 — */
-$("paxbody").innerHTML=PAX.map(p=>`<tr>
-  <td><a href="${p.u}" target="_blank" rel="noopener">${p.n}</a>${p.best?' <span class="pill ns">全程直飞</span>':p.ns?' <span class="pill ns">直飞</span>':' <span class="pill st">含中转</span>'}</td>
-  <td class="num mono${p.best?" best":""}">${usd(p.per)}</td>
-  <td class="num mono${p.best?" best":""}">${usd(p.per)}</td>
-  <td class="num mono${p.best?" best":""}">${usd(p.per)}</td>
-  <td class="num mono${p.best?" best":""}">${usd(p.per)}</td>
-  <td class="num mono${p.best?" best":""}">${usd(p.per*4)}</td></tr>`).join("");
-
 /* — 重点监控 — */
-const cnyRaw=n=>n==null?"—":"¥"+Math.round(n).toLocaleString("en-US");
 $("trackQuotes").innerHTML=TRACKED_QUOTES.map(q=>`<div class="tq${q.mine?" mine":""}${q.verified?" mine":""}">
   <div class="n">${q.mine?"★ ":q.verified?"✓ ":""}<a href="${q.u}" target="_blank" rel="noopener" style="color:inherit;border-bottom:1px solid currentColor">${q.n}</a></div>
   <div class="p mono">${cnyRaw(q.p)}</div></div>`).join("");
@@ -576,14 +551,14 @@ const stopPill=p=>p.blocked?'<span class="pill na">未取到</span>'
   :p.single?'<span class="pill st">两段单程</span>':'<span class="pill ns">联程</span>';
 $("platA").innerHTML=PLATFORMS_A.map(p=>`<tr>
   <td><a href="${p.url}" target="_blank" rel="noopener">${p.name}</a><br>${stopPill(p)}</td>
-  <td class="num mono${p.best?" best":""}">${usd(p.low)}</td>
-  <td class="num mono">${usd(p.nsOut)}</td>
-  <td class="num mono">${usd(p.nsBoth)}</td>
+  <td class="num mono${p.best?" best":""}">${priceOf(p,p.low)}</td>
+  <td class="num mono">${priceOf(p,p.nsOut)}</td>
+  <td class="num mono">${priceOf(p,p.nsBoth)}</td>
   <td style="color:var(--muted);font-size:12.5px">${p.flight}</td></tr>`).join("");
 $("platB").innerHTML=PLATFORMS_B.map(p=>`<tr>
   <td><a href="${p.url}" target="_blank" rel="noopener">${p.name}</a><br>${stopPill(p)}</td>
-  <td class="num mono${p.best?" best":""}">${usd(p.low)}</td>
-  <td class="num mono">${usd(p.nsBoth)}</td>
+  <td class="num mono${p.best?" best":""}">${priceOf(p,p.low)}</td>
+  <td class="num mono">${priceOf(p,p.nsBoth)}</td>
   <td style="color:var(--muted);font-size:12.5px">${p.flight}</td></tr>`).join("");
 
 /* — 趋势图 — */
